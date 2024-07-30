@@ -33,13 +33,14 @@ always_comb begin
     // Rtype/Itype
     else if (ALUOp == 2'b10) begin
         case (Funct3)
-            3'b000: Operation = (Funct7 == 7'b0000000) ? 4'b0010 : // ADD
-                                 (Funct7 == 7'b0100000) ? 4'b0110 : 4'b0000; // SUB
+            3'b000: Operation = (Funct7 == 7'b0100000) ? 4'b0110 : 4'b0010; // SUB ou ADD/ADDI
             3'b001: Operation = (Funct7 == 7'b0000000) ? 4'b0111 : 4'b0000; // SLL/SLLI
             3'b010: Operation = 4'b1100; // SLT/BLT
             3'b100: Operation = 4'b0101; // XOR
             3'b101: Operation = (Funct7 == 7'b0000000) ? 4'b1111 : // SRL/SRLI
                                  (Funct7 == 7'b0100000) ? 4'b1110 : 4'b0000; // SRA/SRAI
+            3'b110: Operation = 4'b0001; // OR
+            3'b111: Operation = 4'b0000; // AND
             default: Operation = 4'b0000;
         endcase
     end
