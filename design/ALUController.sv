@@ -16,7 +16,7 @@ always_comb begin
 
     // LW/SW/AUIPC
     if (ALUOp == 2'b00) begin
-        Operation = 4'b0010; // LW/SW/AUIPC mapped to ADD operation
+        Operation = 4'b0010; // LW/SW mapped to ADD operation
     end
 
     // Branch
@@ -25,7 +25,7 @@ always_comb begin
             3'b000: Operation = 4'b1000; // BEQ
             3'b001: Operation = 4'b1001; // BNE
             3'b101: Operation = 4'b1010; // BGE
-            3'b100: Operation = 4'b1011; // BLT
+            3'b100: Operation = 4'b1100; // BLT
             default: Operation = 4'b0000;
         endcase
     end
@@ -35,7 +35,7 @@ always_comb begin
         case (Funct3)
             3'b000: Operation = (Funct7 == 7'b0100000) ? 4'b0110 : 4'b0010; // SUB ou ADD/ADDI
             3'b001: Operation = (Funct7 == 7'b0000000) ? 4'b0111 : 4'b0000; // SLL/SLLI
-            3'b010: Operation = 4'b1100; // SLT/BLT
+            3'b010: Operation = 4'b1100; // SLT
             3'b100: Operation = 4'b0101; // XOR
             3'b101: Operation = (Funct7 == 7'b0000000) ? 4'b1111 : // SRL/SRLI
                                  (Funct7 == 7'b0100000) ? 4'b1110 : 4'b0000; // SRA/SRAI
@@ -47,11 +47,7 @@ always_comb begin
 
     // JAL/LUI
     else if (ALUOp == 2'b11) begin
-        case (Funct3)
-            3'b000: Operation = 4'b1011; // LUI
-            3'b001: Operation = 4'b0011; // JAL/JALR
-            default: Operation = 4'b0000;
-        endcase
+        Operation = 4'b1011; // LUI
     end
 end
 

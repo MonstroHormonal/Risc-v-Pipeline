@@ -16,31 +16,24 @@ module Controller (
     output logic MemRead,  //Data memory contents designated by the address input are put on the Read data output
     output logic MemWrite, //Data memory contents designated by the address input are replaced by the value on the Write data input.
     output logic [1:0] ALUOp,  //00: LW/SW; 01:Branch; 10: Rtype
-    output logic Branch,  //0: branch is not taken; 1: branch is taken
-    output logic JalSel,
-    output logic JalrSel
+    output logic Branch  //0: branch is not taken; 1: branch is taken
 );
 
-  logic [6:0] R_TYPE, I_TYPE, LW, SW, BR, LUI, JAL, JALr;
+  logic [6:0] R_TYPE, I_TYPE, LW, SW, BR, LUI;
 
-  assign R_TYPE = 7'b0110011;  //add,and / Register
-  assign I_TYPE = 7'b0010011; //addi / Imeadiate
-  assign LW = 7'b0000011;  //lw / Load
-  assign SW = 7'b0100011;  //sw / Store
-  assign BR = 7'b1100011;  //beq / Branch
-  assign LUI = 7'b0110111;  //lui / Load Upper Immediate
-  assign JAL = 7'b1101111; //JAL / Jump and Link
-  assign JALr = 7'b1100111; //JALr / Jump and Link Register
+  assign R_TYPE = 7'b0110011;  //add,and
+  assign I_TYPE = 7'b0010011; //addi
+  assign LW = 7'b0000011;  //lw
+  assign SW = 7'b0100011;  //sw
+  assign BR = 7'b1100011;  //branch
+  assign LUI = 7'b0110111;  //lui
 
-  assign ALUSrc = (Opcode == LW || Opcode == SW || Opcode == I_TYPE || Opcode == LUI); 
+  assign ALUSrc = (Opcode == LW || Opcode == SW || Opcode == I_TYPE || Opcode == LUI);
   assign MemtoReg = (Opcode == LW);
-  assign RegWrite = (Opcode == R_TYPE || Opcode == LW || Opcode == I_TYPE || Opcode == LUI || Opcode == JAL || Opcode == JALr); //|| Opcode == JAL
+  assign RegWrite = (Opcode == R_TYPE || Opcode == LW || Opcode == I_TYPE || Opcode == LUI);
   assign MemRead = (Opcode == LW);
   assign MemWrite = (Opcode == SW);
-  assign ALUOp[0] = (Opcode == BR || Opcode == LUI || Opcode == JAL || Opcode == JALr);
-  assign ALUOp[1] = (Opcode == R_TYPE || Opcode == I_TYPE || Opcode == LUI);
-  assign Branch = (Opcode == BR || Opcode == JAL || Opcode == JALr);
-  assign JalSel = (Opcode == JAL || Opcode == JALr);
-  assign JalrSel = (Opcode == JALr);
-
+  assign ALUOp[0] = (Opcode == BR || Opcode == LUI);
+  assign ALUOp[1] = (Opcode == R_TYPE) || (Opcode == I_TYPE) || (Opcode == LUI);
+  assign Branch = (Opcode == BR);
 endmodule

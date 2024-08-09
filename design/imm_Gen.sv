@@ -11,7 +11,7 @@ module imm_Gen (
       7'b0010011:  /*I-Type*/
       Imm_out = {inst_code[31] ? 20'hFFFFF : 20'b0, inst_code[31:20]};
 
-      7'b0000011:  /*I-type load part*/
+      7'b0000011:  /*L-type*/
       Imm_out = {inst_code[31] ? 20'hFFFFF : 20'b0, inst_code[31:20]};
 
       7'b0100011:  /*S-type*/
@@ -26,6 +26,9 @@ module imm_Gen (
         inst_code[11:8],
         1'b0
       };
+
+      7'b0110111:  //LUI   
+      Imm_out = {12'b0,inst_code[31:12]};
 
       default: Imm_out = {32'b0};
 

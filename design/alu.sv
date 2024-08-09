@@ -41,11 +41,11 @@ module alu#(
                 ALUResult = SrcA >> SrcB[4:0];
                 
         //Branch
-            4'b1000: // Equal
+            4'b1000: // BEQ
                 ALUResult = (SrcA == SrcB) ? 1 : 0;
-            4'b1001: // Different -- BNE
+            4'b1001: // BNE
                 ALUResult = (SrcA != SrcB) ? 1 : 0;
-            4'b1010: // Greater than -- BGE
+            4'b1010: // BGE
                 if (SrcA[31] == 1 && SrcB[31] == 0)
                     ALUResult = 0;
                 else if (SrcA[31] == 0 && SrcB[31] == 1)
